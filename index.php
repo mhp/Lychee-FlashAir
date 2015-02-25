@@ -27,6 +27,13 @@ class FlashAirPlugin implements SplObserver {
             }
             $this->importedFiles = array();
 
+            if ($subject->args[1].'/' !== LYCHEE_UPLOADS_IMPORT) {
+                # Attempts to import from non-default directory should proceed,
+                # but without attempting to download files into a user-specified
+                # location first!
+                return true;
+            }
+
             $files = file_get_contents('http://' . $this->flashAir . '/command.cgi?op=100&DIR=' . $this->syncDir);
 
             if ($files)
